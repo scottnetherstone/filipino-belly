@@ -68,6 +68,9 @@ nav {
   transition: color 0.3s;
 }
 .nav-links a:hover { color: var(--gold); }
+.nav-fb { display: flex; align-items: center; }
+.nav-fb-icon { width: 20px; height: 20px; object-fit: contain; opacity: 0.7; transition: opacity 0.3s; }
+.nav-fb-icon:hover { opacity: 1; }
 
 .nav-toggle { display:none; background:none; border:none; cursor:pointer; }
 .nav-toggle span { display:block; width:24px; height:2px; background:var(--text-light); margin:5px 0; transition: 0.3s; }
@@ -659,6 +662,7 @@ footer a { color: var(--gold); text-decoration: none; }
     <li><a href="#menu" onclick="closeNav()">Menu</a></li>
     <li><a href="#gallery" onclick="closeNav()">Gallery</a></li>
     <li><a href="#order" onclick="closeNav()">Order</a></li>
+    <li><a href="https://www.facebook.com/TheFilipinoBelly2020" target="_blank" class="nav-fb"><img src="assets/images/facebook.webp" alt="Facebook" class="nav-fb-icon"></a></li>
   </ul>
 </nav>
 
