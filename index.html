@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Filipino Belly | Authentic Filipino Food | Wimauma, FL</title>
+<meta name="description" content="Authentic Filipino cuisine in Wimauma, FL. Catering, party trays, and daily orders. Lumpia, adobo, pansit, fried pork belly and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --red: #D42E12;
+  --blue: #0047AB;
+  --gold: #F5B731;
+  --dark: #0D0D0D;
+  --dark-surface: #1A1A1A;
+  --warm-bg: #F0EBE3;
+  --warm-bg-alt: #E8E0D4;
+  --text-dark: #1A1A1A;
+  --text-light: #F0EBE3;
+  --text-muted: #6B6560;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--warm-bg);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+h1,h2,h3,h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  background: rgba(13,13,13,0.95);
+  backdrop-filter: blur(12px);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--gold);
+}
+.nav-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  color: var(--gold);
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+.nav-toggle { display:none; background:none; border:none; cursor:pointer; }
+.nav-toggle span { display:block; width:24px; height:2px; background:var(--text-light); margin:5px 0; transition: 0.3s; }
+
+@media(max-width:768px){
+  .nav-links {
+    position:fixed; top:64px; left:0; right:0;
+    background: rgba(13,13,13,0.98);
+    flex-direction: column;
+    padding: 2rem;
+    gap: 1.5rem;
+    transform: translateY(-120%);
+    transition: transform 0.4s ease;
+  }
+  .nav-links.open { transform: translateY(0); }
+  .nav-toggle { display:block; }
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(0,71,171,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 50%, rgba(212,46,18,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(245,183,49,0.08) 0%, transparent 40%);
+  animation: heroGlow 8s ease-in-out infinite alternate;
+}
+@keyframes heroGlow {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.1) rotate(3deg); }
+}
+
+.hero-logo-wrap {
+  position: relative;
+  z-index: 2;
+  animation: fadeInUp 1s ease-out;
+  width: min(420px, 75vw);
+}
+.hero-logo-fire-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#fireCanvas {
+  position: absolute;
+  top: -40%;
+  left: -15%;
+  width: 130%;
+  height: 160%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-logo {
+  width: 100%;
+  display: block;
+  position: relative;
+  z-index: 2;
+  border-radius: 8px;
+  filter: drop-shadow(0 0 30px rgba(245,183,49,0.25));
+  box-shadow:
+    0 0 8px 2px rgba(212,46,18,0.7),
+    0 0 20px 4px rgba(212,46,18,0.4),
+    0 0 40px 8px rgba(212,46,18,0.2),
+    inset 0 0 12px 2px rgba(212,46,18,0.15);
+  border: 1.5px solid rgba(255,80,30,0.6);
+  animation: rimPulse 6s ease-in-out infinite;
+}
+
+@keyframes rimPulse {
+  0% {
+    box-shadow:
+      0 0 8px 2px rgba(212,46,18,0.7),
+      0 0 20px 4px rgba(212,46,18,0.4),
+      0 0 40px 8px rgba(212,46,18,0.2),
+      inset 0 0 12px 2px rgba(212,46,18,0.15);
+    border-color: rgba(255,80,30,0.6);
+  }
+  30% {
+    box-shadow:
+      0 0 12px 4px rgba(245,183,49,0.6),
+      0 0 28px 8px rgba(245,140,20,0.35),
+      0 0 50px 12px rgba(212,46,18,0.25),
+      inset 0 0 16px 3px rgba(245,183,49,0.12);
+    border-color: rgba(245,160,30,0.7);
+  }
+  60% {
+    box-shadow:
+      0 0 10px 3px rgba(212,46,18,0.8),
+      0 0 24px 6px rgba(212,46,18,0.45),
+      0 0 44px 10px rgba(212,46,18,0.2),
+      inset 0 0 14px 2px rgba(212,46,18,0.18);
+    border-color: rgba(255,60,20,0.65);
+  }
+  100% {
+    box-shadow:
+      0 0 8px 2px rgba(212,46,18,0.7),
+      0 0 20px 4px rgba(212,46,18,0.4),
+      0 0 40px 8px rgba(212,46,18,0.2),
+      inset 0 0 12px 2px rgba(212,46,18,0.15);
+    border-color: rgba(255,80,30,0.6);
+  }
+}
+
+.hero-tagline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  color: var(--text-light);
+  margin-top: 1.5rem;
+  letter-spacing: 0.12em;
+  position: relative;
+  z-index: 2;
+  animation: fadeInUp 1s ease-out 0.3s both;
+}
+.hero-tagline span { color: var(--gold); }
+
+.hero-sub {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-top: 0.75rem;
+  position: relative; z-index:2;
+  animation: fadeInUp 1s ease-out 0.5s both;
+  letter-spacing: 0.02em;
+}
+
+.hero-ctas {
+  display: flex; gap: 1rem;
+  margin-top: 2.5rem;
+  position: relative; z-index: 2;
+  animation: fadeInUp 1s ease-out 0.7s both;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn {
+  display: inline-block;
+  padding: 0.9rem 2.2rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-primary {
+  background: var(--red);
+  color: white;
+  border-color: var(--red);
+}
+.btn-primary:hover { background: #B82510; border-color: #B82510; }
+.btn-outline {
+  background: transparent;
+  color: var(--gold);
+  border-color: var(--gold);
+}
+.btn-outline:hover { background: var(--gold); color: var(--dark); }
+
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(30px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* ── HERO FLOATING REVIEWS ── */
+.hero-reviews {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.hero-review {
+  position: absolute;
+  max-width: 280px;
+  padding: 1rem 1.2rem;
+  background: rgba(26, 26, 26, 0.85);
+  backdrop-filter: blur(8px);
+  border: none;
+  border-radius: 0;
+  color: var(--text-light);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  font-style: italic;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: reviewFloat 10s ease-in-out forwards;
+  pointer-events: none;
+  box-shadow: none;
+}
+.hero-review::before {
+  content: '\201C';
+  position: absolute;
+  top: -0.2rem;
+  left: 0.6rem;
+  font-size: 2rem;
+  font-style: normal;
+  color: var(--gold);
+  opacity: 0.5;
+  font-family: 'Bebas Neue', sans-serif;
+  line-height: 1;
+}
+.hero-review-stars {
+  display: block;
+  margin-top: 0.4rem;
+  font-style: normal;
+  color: var(--gold);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+@keyframes reviewFloat {
+  0%   { opacity: 0; transform: translateY(10px); }
+  15%  { opacity: 0.85; transform: translateY(0); }
+  75%  { opacity: 0.85; transform: translateY(-3px); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+@media(max-width:768px){
+  .hero-review { max-width: 200px; font-size: 0.72rem; padding: 0.8rem 1rem; }
+}
+@media(max-width:480px){
+  .hero-reviews { display: none; }
+}
+
+/* ── SECTION BASICS ── */
+section { padding: 5rem 2rem; }
+.container { max-width: 1100px; margin: 0 auto; }
+
+.section-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 0.5rem;
+}
+.section-title {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+.section-title .accent { color: var(--red); }
+
+/* ── ABOUT ── */
+.about {
+  background: var(--warm-bg);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.about-text p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #4A4440;
+  margin-bottom: 1rem;
+}
+.about-image {
+  aspect-ratio: 4/5;
+  background: var(--dark-surface);
+  border: 3px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  position: relative;
+  overflow: hidden;
+}
+.about-image::after {
+  display: none;
+}
+
+@media(max-width:768px){
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+/* ── MENU ── */
+.menu-section {
+  background: var(--dark);
+  color: var(--text-light);
+}
+
+.menu-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 3rem;
+  border-bottom: 2px solid #333;
+}
+.menu-tab {
+  padding: 1rem 2rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+.menu-tab.active {
+  color: var(--gold);
+}
+.menu-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left:0; right:0;
+  height: 2px;
+  background: var(--gold);
+}
+.menu-tab:hover { color: var(--gold); }
+
+.menu-panel { display: none; }
+.menu-panel.active { display: block; }
+
+/* Daily Menu */
+.daily-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.menu-item {
+  background: var(--dark-surface);
+  padding: 1.5rem;
+  border-left: 3px solid var(--red);
+  transition: border-color 0.3s, transform 0.3s;
+}
+.menu-item:hover { border-color: var(--gold); transform: translateX(4px); }
+.menu-item-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 1rem;
+  background: #2a2a2a;
+}
+.menu-item-img-placeholder {
+  width: 100%;
+  height: 180px;
+  background: #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+.menu-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+}
+.menu-item-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+}
+.menu-item-price {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 1.1rem;
+  white-space: nowrap;
+  margin-left: 1rem;
+}
+.menu-item-desc {
+  font-size: 0.85rem;
+  color: #888;
+  line-height: 1.5;
+}
+
+/* Catering / Party Trays */
+.catering-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+.tray-card {
+  background: var(--dark-surface);
+  padding: 1.8rem;
+  border: 1px solid #2a2a2a;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.tray-card:hover { border-color: var(--gold); }
+.tray-card-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 1rem;
+  background: #2a2a2a;
+}
+.tray-card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: var(--text-light);
+}
+.tray-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #2a2a2a;
+}
+.tray-option:last-child { border-bottom: none; }
+.tray-size {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.tray-size .pieces {
+  color: #888;
+  font-size: 0.8rem;
+  display: block;
+}
+.tray-meta {
+  text-align: right;
+}
+.tray-price {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.tray-feeds {
+  display: inline-block;
+  margin-top: 0.25rem;
+  background: rgba(212,46,18,0.15);
+  color: var(--red);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+}
+
+.tray-sizes-note {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  background: rgba(245,183,49,0.06);
+  border: 1px solid rgba(245,183,49,0.2);
+  font-size: 0.85rem;
+  color: #aaa;
+  line-height: 1.6;
+}
+.tray-sizes-note strong { color: var(--gold); }
+
+.preorder-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--red);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  margin-top: 2rem;
+}
+
+/* ── GALLERY ── */
+.gallery {
+  background: var(--warm-bg-alt);
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+.gallery-item {
+  aspect-ratio: 1;
+  background: var(--dark-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 0.8rem;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+.gallery-item:hover { transform: scale(1.02); }
+.gallery-item img { width:100%; height:100%; object-fit:cover; }
+
+@media(max-width:600px){
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── CONTACT / ORDER ── */
+.contact {
+  background: var(--dark);
+  color: var(--text-light);
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+.contact-method {
+  margin-bottom: 2rem;
+}
+.contact-method-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+.contact-method-value {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.contact-method-value a {
+  color: var(--text-light);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.contact-method-value a:hover { color: var(--gold); }
+
+.contact-cta {
+  background: var(--dark-surface);
+  padding: 2.5rem;
+  border: 1px solid #2a2a2a;
+}
+.contact-cta h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.contact-cta p {
+  color: #888;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+@media(max-width:768px){
+  .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark);
+  border-top: 1px solid #222;
+  padding: 2rem;
+  text-align: center;
+  color: #555;
+  font-size: 0.8rem;
+}
+footer a { color: var(--gold); text-decoration: none; }
+
+/* ── DECORATIVE ── */
+.flag-stripe {
+  height: 4px;
+  background: linear-gradient(90deg, var(--blue) 33%, var(--gold) 33% 66%, var(--red) 66%);
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">THE FILIPINO BELLY</a>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#about" onclick="closeNav()">About</a></li>
+    <li><a href="#menu" onclick="closeNav()">Menu</a></li>
+    <li><a href="#gallery" onclick="closeNav()">Gallery</a></li>
+    <li><a href="#order" onclick="closeNav()">Order</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-logo-wrap">
+  <div class="hero-logo-fire-container">
+    <canvas id="fireCanvas"></canvas>
+  <img src="assets/images/Filipino Belly Logo Dark.png" alt="The Filipino Belly Logo" class="hero-logo">
+  </div>
+  </div>
+  <p class="hero-tagline">AUTHENTIC FILIPINO FOOD <span>MADE WITH LOVE</span></p>
+  <p class="hero-sub">Wimauma, FL &mdash; Drop-Off Catering &amp; Daily Orders</p>
+  <div class="hero-ctas">
+    <a href="#menu" class="btn btn-primary">VIEW MENU</a>
+    <a href="#order" class="btn btn-outline">PLACE AN ORDER</a>
+  </div>
+  <!-- Floating reviews container -->
+  <div class="hero-reviews" id="heroReviews" aria-hidden="true"></div>
+</section>
+
+<div class="flag-stripe"></div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-label">Our Story</p>
+        <h2 class="section-title">From Our Kitchen <br>To <span class="accent">Your Table</span></h2>
+        <p>The Filipino Belly brings the bold, vibrant flavors of the Philippines straight from a small village in Misamis Oriental, Cagayan de Oro to your table here in Wimauma, Florida.</p>
+        <p>Every dish is crafted from recipes passed down by her father Moises and brothers — the same Moises whose silhouette graces our logo. From crispy, golden lumpia to savory adobo simmered to perfection, each bite carries the flavors of home.</p>
+        <p>We offer daily orders and drop-off catering for parties and events of all sizes — we set up your food trays with warmers so everything stays hot and ready for your guests. Pre-orders are always welcome!</p>
+      </div>
+      <div class="about-image">
+        <img src="assets/images/Mercy Lumpia.jpg" alt="Mercy Williams, Head Chef and Co-Owner of The Filipino Belly" style="width:100%; height:100%; object-fit:cover;">
+        <p style="position:absolute; bottom:0; left:0; right:0; background:rgba(13,13,13,0.75); color:var(--text-light); font-size:0.75rem; padding:0.5rem 0.8rem; text-align:center; letter-spacing:0.04em;">Mercy Williams — Head Chef & Co-Owner</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="container">
+    <p class="section-label" style="color:var(--gold)">What We Serve</p>
+    <h2 class="section-title" style="color:var(--text-light)">The <span style="color:var(--red)">Menu</span></h2>
+
+    <div class="menu-tabs">
+      <button class="menu-tab active" onclick="switchTab('daily')">Daily Menu</button>
+      <button class="menu-tab" onclick="switchTab('catering')">Party Trays &amp; Catering</button>
+    </div>
+
+    <!-- DAILY MENU -->
+    <div class="menu-panel active" id="panel-daily">
+      <div class="daily-grid">
+        <div class="menu-item">
+          <img src="assets/images/Pork Lumpia.jpg" alt="Pork Lumpia" class="menu-item-img">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Pork Lumpia (10 pcs)</span>
+            <span class="menu-item-price">$15</span>
+          </div>
+          <p class="menu-item-desc">Classic Filipino spring rolls filled with seasoned pork, golden and crispy.</p>
+        </div>
+        <div class="menu-item">
+          <img src="assets/images/Chicken Lumpia.jpg" alt="Chicken Lumpia" class="menu-item-img">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Chicken Lumpia (10 pcs)</span>
+            <span class="menu-item-price">$15</span>
+          </div>
+          <p class="menu-item-desc">Golden fried spring rolls with a savory chicken filling.</p>
+        </div>
+        <div class="menu-item">
+          <img src="assets/images/Veggie Lumpia.jpg" alt="Veggie Lumpia" class="menu-item-img">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Veggie Lumpia (10 PCS)</span>
+            <span class="menu-item-price">$15</span>
+          </div>
+          <p class="menu-item-desc">Crispy spring rolls loaded with fresh vegetables.</p>
+        </div>
+        <div class="menu-item">
+          <img src="assets/images/Pansit.jpg" alt="Pansit Noodles" class="menu-item-img">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Pansit Noodles</span>
+            <span class="menu-item-price">$20</span>
+          </div>
+          <p class="menu-item-desc">Good for 2. Stir-fried Filipino noodles with veggies, chicken, and pork.</p>
+        </div>
+        <div class="menu-item">
+          <img src="assets/images/Pork Adobo.jpg" alt="Pork Adobo" class="menu-item-img">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Pork Adobo</span>
+            <span class="menu-item-price">$25</span>
+          </div>
+          <p class="menu-item-desc">Good for 2–3. Tender pork braised in soy sauce, vinegar, and garlic.</p>
+        </div>
+        <div class="menu-item">
+          <img src="assets/images/Chicken Adobo.jpg" alt="Chicken Adobo" class="menu-item-img">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Chicken Adobo</span>
+            <span class="menu-item-price">$20</span>
+          </div>
+          <p class="menu-item-desc">Includes 3 chicken legs, 2 lumpia, and 2 servings of white rice.</p>
+        </div>
+        <div class="menu-item">
+          <img src="assets/images/Fried Pork Belly.jpg" alt="Fried Pork Belly" class="menu-item-img">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Fried Pork Belly</span>
+            <span class="menu-item-price">$30</span>
+          </div>
+          <p class="menu-item-desc">Good for 2. Crispy fried pork belly served with 3 lumpia.</p>
+        </div>
+        <div class="menu-item">
+          <img src="assets/images/Fried Rice.jpg" alt="Fried Rice" class="menu-item-img">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Fried Rice</span>
+            <span class="menu-item-price">$30</span>
+          </div>
+          <p class="menu-item-desc">Good for 2–3. With carrot, cabbage, green bean, onion, garlic, and chicken or pork.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATERING -->
+    <div class="menu-panel" id="panel-catering">
+      <div class="catering-grid">
+
+        <div class="tray-card">
+          <div class="tray-card-name">Pork Lumpia</div>
+          <div class="tray-option">
+            <div class="tray-size">Party Tray (20&times;12)<span class="pieces">230 pieces</span></div>
+            <div class="tray-meta"><span class="tray-price">$345</span></div>
+          </div>
+          <div class="tray-option">
+            <div class="tray-size">Full Tray (12&times;10)<span class="pieces">60 pieces</span></div>
+            <div class="tray-meta"><span class="tray-price">$90</span></div>
+          </div>
+        </div>
+
+        <div class="tray-card">
+          <div class="tray-card-name">Chicken Lumpia</div>
+          <div class="tray-option">
+            <div class="tray-size">Party Tray (20&times;12)<span class="pieces">230 pieces</span></div>
+            <div class="tray-meta"><span class="tray-price">$345</span></div>
+          </div>
+          <div class="tray-option">
+            <div class="tray-size">Full Tray (12&times;10)<span class="pieces">60 pieces</span></div>
+            <div class="tray-meta"><span class="tray-price">$90</span></div>
+          </div>
+        </div>
+
+        <div class="tray-card">
+          <div class="tray-card-name">Pansit Noodles</div>
+          <div class="tray-option">
+            <div class="tray-size">Party Tray (20&times;12)</div>
+            <div class="tray-meta">
+              <span class="tray-price">$120</span>
+              <span class="tray-feeds">Feeds ~30</span>
+            </div>
+          </div>
+          <div class="tray-option">
+            <div class="tray-size">Full Tray (12&times;10)</div>
+            <div class="tray-meta">
+              <span class="tray-price">$75</span>
+              <span class="tray-feeds">Feeds ~15</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tray-card">
+          <div class="tray-card-name">Pork Adobo</div>
+          <div class="tray-option">
+            <div class="tray-size">Full Tray (12&times;10)</div>
+            <div class="tray-meta">
+              <span class="tray-price">$115</span>
+              <span class="tray-feeds">Feeds ~15</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tray-card">
+          <div class="tray-card-name">Chicken Adobo</div>
+          <div class="tray-option">
+            <div class="tray-size">Party Tray (20&times;12)<span class="pieces">30 legs</span></div>
+            <div class="tray-meta"><span class="tray-price">$160</span></div>
+          </div>
+          <div class="tray-option">
+            <div class="tray-size">Full Tray (12&times;10)<span class="pieces">15 legs</span></div>
+            <div class="tray-meta"><span class="tray-price">$90</span></div>
+          </div>
+        </div>
+
+        <div class="tray-card">
+          <div class="tray-card-name">Fried Pork Belly</div>
+          <div class="tray-option">
+            <div class="tray-size">Full Tray (12&times;10)</div>
+            <div class="tray-meta"><span class="tray-price">$195</span></div>
+          </div>
+        </div>
+
+        <div class="tray-card">
+          <div class="tray-card-name">Fried Rice</div>
+          <div class="tray-option">
+            <div class="tray-size">Full Tray (12&times;10)</div>
+            <div class="tray-meta"><span class="tray-price">$80</span></div>
+          </div>
+        </div>
+
+        <div class="tray-card">
+          <img src="assets/images/Shrimp Tray.JPG" alt="Buttered Shrimp Tray" class="tray-card-img">
+          <div class="tray-card-name">Buttered Shrimp</div>
+          <div class="tray-option">
+            <div class="tray-size">Full Tray (12&times;10)</div>
+            <div class="tray-meta"><span class="tray-price">$175</span></div>
+          </div>
+        </div>
+
+        <div class="tray-card">
+          <div class="tray-card-name">Veggie Tray</div>
+          <div class="tray-option">
+            <div class="tray-size">Full Tray (12&times;10)</div>
+            <div class="tray-meta"><span class="tray-price">$75</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tray-sizes-note">
+        <strong>Tray Sizes:</strong> Full Tray is 12&times;10 inches &bull; Party Tray is 20&times;12 inches<br>
+        All catering orders require pre-order. Drop-off catering includes tray setup with warmers. Please contact us at least 4 days in advance.
+      </div>
+
+      <div class="preorder-badge">&#9888; PRE-ORDER REQUIRED FOR ALL PARTY TRAYS</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="flag-stripe"></div>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <p class="section-label">See The Food</p>
+    <h2 class="section-title">From Our <span class="accent">Kitchen</span></h2>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="assets/images/Fried Pork Belly 2.jpg" alt="Fried Pork Belly"></div>
+      <div class="gallery-item"><img src="assets/images/Lumpia 20 count.jpg" alt="Lumpia 20 Count"></div>
+      <div class="gallery-item"><img src="assets/images/Pork Lumpia.jpg" alt="Pork Lumpia"></div>
+      <div class="gallery-item"><img src="assets/images/Chicken Adobo.jpg" alt="Chicken Adobo"></div>
+      <div class="gallery-item"><img src="assets/images/Fried Pork Belly.jpg" alt="Fried Pork Belly"></div>
+      <div class="gallery-item"><img src="assets/images/Fried Rice.jpg" alt="Fried Rice"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="order">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <p class="section-label" style="color:var(--gold)">Get In Touch</p>
+        <h2 class="section-title" style="color:var(--text-light)">Ready to <span style="color:var(--red)">Order?</span></h2>
+
+        <div class="contact-method">
+          <p class="contact-method-label">Facebook Messenger (Preferred)</p>
+          <p class="contact-method-value"><a href="https://m.me/TheFilipinoBelly2020" target="_blank">Message @TheFilipinoBelly</a></p>
+        </div>
+        <div class="contact-method">
+          <p class="contact-method-label">Phone / Text</p>
+          <p class="contact-method-value"><a href="tel:+17206455088">(720) 645-5088</a></p>
+        </div>
+        <div class="contact-method">
+          <p class="contact-method-label">Email</p>
+          <p class="contact-method-value"><a href="mailto:thefilipinobelly2020@gmail.com" style="font-size:0.95rem;">thefilipinobelly2020@gmail.com</a>
+          </p>
+        </div>
+        <div class="contact-method">
+          <p class="contact-method-label">Location</p>
+          <p class="contact-method-value">Wimauma, FL</p>
+        </div>
+      </div>
+
+      <div class="contact-cta">
+        <h3>HOW TO ORDER</h3>
+        <p>We accept daily orders and drop-off catering requests. The easiest way to order is through <strong style="color:var(--gold)">Facebook Messenger</strong> — just send us a message! You can also call or text us, or reach out by email.</p>
+        <p>For party trays and catering, please allow at least <strong style="color:var(--gold)">4 days notice</strong> so we can prepare everything fresh. We'll deliver and set up your trays with warmers, then pick up our equipment after your event.</p>
+        <a href="https://m.me/TheFilipinoBelly2020" target="_blank" class="btn btn-primary">MESSAGE US</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="flag-stripe"></div>
+<footer>
+  <p>&copy; 2026 The Filipino Belly &mdash; Wimauma, FL &bull; <a href="https://www.facebook.com/TheFilipinoBelly2020/">Facebook</a></p>
+</footer>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+function closeNav() {
+  document.querySelector('.nav-links').classList.remove('open');
+}
+
+// ── FIRE PARTICLE SYSTEM ──
+(function() {
+  const canvas = document.getElementById('fireCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let W, H;
+  let LX = 0, LY = 0, LW = 100, LH = 100;
+  const logoImg = canvas.parentElement.querySelector('.hero-logo');
+  if (!logoImg) return;
+
+  function resize() {
+    const containerRect = canvas.parentElement.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = containerRect.width * 1.3;
+    H = containerRect.height * 1.6;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    measureLogo();
+  }
+
+  function measureLogo() {
+    const canvasRect = canvas.getBoundingClientRect();
+    const lr = logoImg.getBoundingClientRect();
+    if (lr.width === 0 || lr.height === 0) return;
+    const sx = W / canvasRect.width;
+    const sy = H / canvasRect.height;
+    LX = (lr.left - canvasRect.left) * sx;
+    LY = (lr.top - canvasRect.top) * sy;
+    LW = lr.width * sx;
+    LH = lr.height * sy;
+  }
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      const perimeter = 2 * (LW + LH);
+      let pos = Math.random() * perimeter;
+
+      if (pos < LW) {
+        this.x = LX + pos;
+        this.y = LY - Math.random() * 2;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = -(0.15 + Math.random() * 0.35);
+      } else if (pos < LW + LH) {
+        this.x = LX + LW + Math.random() * 2;
+        this.y = LY + (pos - LW);
+        this.vx = 0.15 + Math.random() * 0.35;
+        this.vy = (Math.random() - 0.5) * 0.3;
+      } else if (pos < 2 * LW + LH) {
+        this.x = LX + (pos - LW - LH);
+        this.y = LY + LH + Math.random() * 2;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = 0.15 + Math.random() * 0.35;
+      } else {
+        this.x = LX - Math.random() * 2;
+        this.y = LY + (pos - 2 * LW - LH);
+        this.vx = -(0.15 + Math.random() * 0.35);
+        this.vy = (Math.random() - 0.5) * 0.3;
+      }
+
+      this.life = 0;
+      this.maxLife = 30 + Math.random() * 40;
+      this.size = 1.5 + Math.random() * 4;
+      this.wind = (Math.random() - 0.5) * 0.06;
+    }
+    update() {
+      this.life++;
+      if (this.life > this.maxLife) { this.reset(); return; }
+      this.vx *= 0.98;
+      this.vy *= 0.98;
+      this.vx += this.wind + Math.sin(this.life * 0.15) * 0.03;
+      this.vy += Math.cos(this.life * 0.12) * 0.03;
+      this.x += this.vx;
+      this.y += this.vy;
+      this.size *= 0.995;
+    }
+    draw() {
+      const t = this.life / this.maxLife;
+      let alpha;
+      if (t < 0.1) alpha = t / 0.1;
+      else if (t < 0.5) alpha = 1;
+      else alpha = 1 - (t - 0.5) / 0.5;
+      alpha = Math.max(0, alpha * 0.7);
+
+      let r, g, b;
+      if (t < 0.15) {
+        r = 255; g = 240; b = 200;
+      } else if (t < 0.35) {
+        const p = (t - 0.15) / 0.2;
+        r = 255; g = Math.floor(240 - p * 80); b = Math.floor(200 - p * 170);
+      } else if (t < 0.65) {
+        const p = (t - 0.35) / 0.3;
+        r = Math.floor(255 - p * 40); g = Math.floor(160 - p * 100); b = Math.floor(30 - p * 25);
+      } else {
+        const p = (t - 0.65) / 0.35;
+        r = Math.floor(215 - p * 80); g = Math.floor(60 - p * 50); b = Math.floor(5);
+      }
+
+      const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+      grad.addColorStop(0, `rgba(${r},${g},${b},${alpha})`);
+      grad.addColorStop(0.4, `rgba(${r},${g},${b},${alpha * 0.6})`);
+      grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+      ctx.fillStyle = grad;
+      ctx.fillRect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+    }
+  }
+
+  function startFire() {
+    resize();
+    window.addEventListener('resize', resize);
+    const PARTICLE_COUNT = 800;
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const p = new Particle();
+      p.life = Math.floor(Math.random() * p.maxLife);
+      particles.push(p);
+    }
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+      for (const p of particles) {
+        p.update();
+        p.draw();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      requestAnimationFrame(animate);
+    }
+    animate();
+  }
+
+  if (logoImg.complete && logoImg.naturalHeight > 0) {
+    startFire();
+  } else {
+    logoImg.addEventListener('load', startFire);
+  }
+})();
+
+// ── FLOATING REVIEWS SYSTEM ──
+(function() {
+  const reviews = [
+    "Our dinner was absolutely delicious and portions are beyond generous! We had leftovers for three extra meals! Everything was full of flavor and fulfilling! I highly recommend ordering from The Filipino Belly!",
+    "The lumpia and pansit was delicious! We highly recommend The Filipino Belly!!",
+    "Food is authentic and delicious! Awesome customer service.",
+    "Best Filipino food I've found locally. The flavors taste like love and care was put into the food. Highly recommend the lumpia and pansit.",
+    "The lumpia and pancit was absolutely delicious! I highly recommend Filipino Belly. Looking forward to my next order.",
+    "The pork belly was amazing! Great food. Great service.",
+    "Amazing food and even better people. Get the Kawali or Chicken Adobo.",
+    "The fried pork belly is amazing!!! So delicious! Definitely ordering again.",
+    "I Loved the chicken adobo! Taste of home.",
+    "The pork lumpia were the best! We'll definitely order again real soon. Super!",
+    "So yummy! Glad I found the Filipino Belly. Owner is so nice and pickup was easy.",
+    "Would give it more than 5 stars if I could!"
+  ];
+
+  const container = document.getElementById('heroReviews');
+  if (!container) return;
+
+  // Define safe zones: left side and right side, avoiding center
+  // Positions are in % of the hero section
+  const zones = [
+    // Left side positions
+    { xMin: 2,  xMax: 18, yMin: 10, yMax: 75 },
+    // Right side positions
+    { xMin: 82, xMax: 97, yMin: 10, yMax: 75 },
+  ];
+
+  let lastUsed = -1;
+  let activeSlots = []; // track where current reviews are to avoid overlap
+
+  function getPosition() {
+    // Alternate sides, with some randomness
+    let zone;
+    if (lastUsed === 0) {
+      zone = zones[1]; lastUsed = 1;
+    } else if (lastUsed === 1) {
+      zone = zones[0]; lastUsed = 0;
+    } else {
+      lastUsed = Math.random() < 0.5 ? 0 : 1;
+      zone = zones[lastUsed];
+    }
+
+    // Try to find a position that doesn't overlap too much with active reviews
+    let bestX, bestY;
+    let attempts = 0;
+    do {
+      bestX = zone.xMin + Math.random() * (zone.xMax - zone.xMin);
+      bestY = zone.yMin + Math.random() * (zone.yMax - zone.yMin);
+      attempts++;
+    } while (attempts < 8 && activeSlots.some(s =>
+      Math.abs(s.x - bestX) < 12 && Math.abs(s.y - bestY) < 18
+    ));
+
+    return { x: bestX, y: bestY, side: lastUsed };
+  }
+
+  let activeReviewTexts = new Set();
+
+  function showReview() {
+    // Pick a review that isn't currently on screen
+    let available = reviews.filter(r => !activeReviewTexts.has(r));
+    if (available.length === 0) return;
+    const review = available[Math.floor(Math.random() * available.length)];
+    activeReviewTexts.add(review);
+    const pos = getPosition();
+
+    const el = document.createElement('div');
+    el.className = 'hero-review';
+    el.style.left = pos.x + '%';
+    el.style.top = pos.y + '%';
+
+    // On right side, anchor from the right edge to prevent overflow
+    if (pos.side === 1) {
+      el.style.left = 'auto';
+      el.style.right = (100 - pos.x) + '%';
+    }
+
+    el.innerHTML = review + '<span class="hero-review-stars">★ ★ ★ ★ ★</span>';
+    container.appendChild(el);
+
+    const slot = { x: pos.x, y: pos.y };
+    activeSlots.push(slot);
+
+    // Remove after animation completes (10s matches CSS)
+    setTimeout(() => {
+      el.remove();
+      activeSlots = activeSlots.filter(s => s !== slot);
+      activeReviewTexts.delete(review);
+    }, 10000);
+  }
+
+  // Stagger start: first review after 2.5s, then every 5-6.5s
+  // Show 2 reviews at a time with offset timing
+  setTimeout(() => {
+    showReview();
+    setInterval(showReview, 5000 + Math.random() * 1500);
+  }, 2500);
+
+  setTimeout(() => {
+    showReview();
+    setInterval(showReview, 5500 + Math.random() * 1500);
+  }, 5300);
+})();
+</script>
+
+</body>
+</html>
