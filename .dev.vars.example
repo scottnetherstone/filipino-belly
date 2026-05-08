@@ -1,0 +1,7 @@
+# Local development secrets — copy this file to `.dev.vars` and fill in values.
+# `.dev.vars` is git-ignored. Production secrets are set in the Cloudflare dashboard.
+#
+# To run locally: `npx wrangler dev` (after `npm install`)
+# Local URL: http://localhost:8787
+
+STRIPE_SECRET_KEY=sk_test_paste_your_key_here

@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "filipino-belly",
+  "main": "src/index.js",
+  "compatibility_date": "2026-05-08",
+  "compatibility_flags": [],
+
+  // Static asset hosting — public/ is uploaded and served at the edge.
+  // The Worker (src/index.js) only runs for paths that don't match a file in public/.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+
+  // Built-in logs — visible in the Cloudflare dashboard under Observability.
+  // Useful for debugging Stripe errors without redeploying.
+  "observability": {
+    "enabled": true
+  }
+
+  // Future sections will live here:
+  //   "vars":      non-secret configuration (public values)
+  //   secrets are added via the dashboard or `wrangler secret put NAME`
+  //   "kv_namespaces", "d1_databases", "r2_buckets", "durable_objects"
+  //   "triggers"   (cron, queues, etc.)
+}

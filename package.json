@@ -1,0 +1,15 @@
+{
+  "name": "filipino-belly",
+  "version": "1.0.0",
+  "description": "The Filipino Belly — Cloudflare Worker + static site for thefilipinobelly.com",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
