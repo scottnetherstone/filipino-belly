@@ -336,6 +336,7 @@ nav {
   max-height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 .cart-side h2 {
   font-size: 1.5rem;
@@ -363,9 +364,6 @@ nav {
 }
 
 .cart-items {
-  overflow-y: auto;
-  flex: 1;
-  min-height: 0;
   margin: 0 -0.5rem;
   padding: 0 0.5rem;
 }
@@ -612,6 +610,82 @@ nav {
   .order-header { padding: 2rem 1rem 1.5rem; }
 }
 
+/* ── CUSTOM ITEM FORM ── */
+.custom-form {
+  background: white;
+  border: 1px solid #e0d8cc;
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.custom-form label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+.custom-form input {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #d4ccc0;
+  font-family: inherit;
+  font-size: 0.95rem;
+  background: white;
+}
+.custom-form input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.custom-form .field-row {
+  display: grid;
+  grid-template-columns: 1fr 130px 90px;
+  gap: 0.75rem;
+}
+.custom-form .price-wrap {
+  position: relative;
+}
+.custom-form .price-wrap::before {
+  content: '$';
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 700;
+  color: var(--text-muted);
+  z-index: 1;
+  pointer-events: none;
+}
+.custom-form .price-wrap input {
+  padding-left: 1.5rem;
+}
+.add-custom-btn {
+  background: var(--red);
+  color: white;
+  border: none;
+  padding: 0.85rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.add-custom-btn:hover { background: #B82510; }
+.custom-form-error {
+  color: var(--red);
+  font-size: 0.85rem;
+  margin-top: -0.3rem;
+  display: none;
+}
+.custom-form-error.show { display: block; }
+
+@media (max-width: 600px) {
+  .custom-form .field-row { grid-template-columns: 1fr; }
+}
+
 /* ── TIP SELECTOR ── */
 .cart-tip {
   margin-bottom: 1rem;
@@ -722,6 +796,7 @@ nav {
     <div class="menu-tabs">
       <button class="menu-tab active" data-tab="daily">Daily Menu</button>
       <button class="menu-tab" data-tab="catering">Party Trays &amp; Catering</button>
+      <button class="menu-tab" data-tab="custom">Custom Item</button>
     </div>
 
     <!-- DAILY MENU PANEL -->
@@ -734,6 +809,41 @@ nav {
       <div id="cateringList"></div>
       <p style="margin-top:1.5rem; padding:1rem; background:rgba(245,183,49,0.1); border-left:3px solid var(--gold); font-size:0.85rem; color:var(--text-muted); line-height:1.6;">
         <strong style="color:var(--text-dark);">Catering note:</strong> Party trays require at least <strong>4 days advance notice</strong>. Please mention your preferred date in the Notes field at checkout.
+      </p>
+    </div>
+
+    <!-- CUSTOM ITEM PANEL -->
+    <div class="menu-panel" id="panel-custom">
+      <h3 style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.04em; margin-bottom:0.6rem;">Add a Custom Item</h3>
+      <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.6; margin-bottom:1rem;">
+        For special orders or items not on the standard menu. Mercy will confirm the details with you when she follows up.
+      </p>
+
+      <div class="custom-form">
+        <div>
+          <label for="customItemName">Item Name</label>
+          <input type="text" id="customItemName" maxlength="100" placeholder="e.g. Lechon for 20 people">
+        </div>
+        <div class="field-row">
+          <div>
+            <label for="customItemPrice">Price (USD)</label>
+            <div class="price-wrap">
+              <input type="text" id="customItemPrice" inputmode="decimal" placeholder="0.00" maxlength="7">
+            </div>
+          </div>
+          <div>
+            <label for="customItemQty">Quantity</label>
+            <input type="number" id="customItemQty" value="1" min="1" max="50">
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button type="button" class="add-custom-btn" onclick="addCustomItem()" style="width:100%;">Add</button>
+          </div>
+        </div>
+        <div class="custom-form-error" id="customFormError"></div>
+      </div>
+
+      <p style="padding:1rem; background:rgba(0,71,171,0.08); border-left:3px solid var(--blue); font-size:0.85rem; color:var(--text-muted); line-height:1.6;">
+        <strong style="color:var(--text-dark);">Note:</strong> Custom items will be verified by Mercy before fulfillment. Pricing must be between $0.50 and $500 per unit.
       </p>
     </div>
   </section>
@@ -911,7 +1021,9 @@ CATERING_MENU.forEach(group => {
 // ─────────────────────────────────────────────
 const CART_KEY = 'fb_cart_v1';
 const TIP_KEY = 'fb_tip_v1';
+const CUSTOM_KEY = 'fb_custom_v1';
 let cart = {}; // { itemId: quantity }
+let customItems = []; // [{ uid, name, priceCents, qty }]
 let tipState = { type: 'none', percent: 0, customCents: 0 };
 
 function loadCart() {
@@ -923,6 +1035,15 @@ function loadCart() {
 function saveCart() {
   try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {}
 }
+function loadCustom() {
+  try {
+    const stored = localStorage.getItem(CUSTOM_KEY);
+    if (stored) customItems = JSON.parse(stored) || [];
+  } catch (e) { customItems = []; }
+}
+function saveCustom() {
+  try { localStorage.setItem(CUSTOM_KEY, JSON.stringify(customItems)); } catch (e) {}
+}
 function loadTip() {
   try {
     const stored = localStorage.getItem(TIP_KEY);
@@ -931,6 +1052,59 @@ function loadTip() {
 }
 function saveTip() {
   try { localStorage.setItem(TIP_KEY, JSON.stringify(tipState)); } catch (e) {}
+}
+
+function addCustomItem() {
+  const nameEl = document.getElementById('customItemName');
+  const priceEl = document.getElementById('customItemPrice');
+  const qtyEl = document.getElementById('customItemQty');
+  const errEl = document.getElementById('customFormError');
+  errEl.classList.remove('show');
+
+  const name = nameEl.value.trim();
+  const priceStr = priceEl.value.trim();
+  const qty = parseInt(qtyEl.value, 10);
+
+  if (!name) { errEl.textContent = 'Please enter an item name.'; errEl.classList.add('show'); return; }
+  const dollars = parseFloat(priceStr);
+  if (isNaN(dollars) || dollars < 0.50 || dollars > 500) {
+    errEl.textContent = 'Price must be between $0.50 and $500.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (!Number.isInteger(qty) || qty < 1 || qty > 50) {
+    errEl.textContent = 'Quantity must be between 1 and 50.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const priceCents = Math.round(dollars * 100);
+  const uid = 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+  customItems.push({ uid, name, priceCents, qty });
+  saveCustom();
+
+  // Reset form
+  nameEl.value = '';
+  priceEl.value = '';
+  qtyEl.value = '1';
+
+  renderAll();
+}
+
+function setCustomQty(uid, qty) {
+  if (qty <= 0) {
+    customItems = customItems.filter(c => c.uid !== uid);
+  } else {
+    const c = customItems.find(c => c.uid === uid);
+    if (c) c.qty = qty;
+  }
+  saveCustom();
+  renderAll();
+}
+function removeCustomItem(uid) {
+  customItems = customItems.filter(c => c.uid !== uid);
+  saveCustom();
+  renderAll();
 }
 
 function addToCart(itemId) {
@@ -951,13 +1125,18 @@ function removeFromCart(itemId) {
 }
 
 function cartItemCount() {
-  return Object.values(cart).reduce((a, b) => a + b, 0);
+  const menuCount = Object.values(cart).reduce((a, b) => a + b, 0);
+  const customCount = customItems.reduce((a, c) => a + c.qty, 0);
+  return menuCount + customCount;
 }
 function cartSubtotal() {
   let total = 0;
   for (const [id, qty] of Object.entries(cart)) {
     const item = ITEMS_BY_ID[id];
     if (item) total += item.price * qty;
+  }
+  for (const c of customItems) {
+    total += c.priceCents * c.qty;
   }
   return total;
 }
@@ -1111,7 +1290,7 @@ function renderCart() {
   badgeEl.style.display = 'inline-block';
   badgeEl.textContent = count;
 
-  itemsEl.innerHTML = Object.entries(cart).map(([id, qty]) => {
+  const menuRows = Object.entries(cart).map(([id, qty]) => {
     const item = ITEMS_BY_ID[id];
     if (!item) return '';
     const lineTotal = item.price * qty;
@@ -1132,6 +1311,28 @@ function renderCart() {
       </div>
     `;
   }).join('');
+
+  const customRows = customItems.map(c => {
+    const lineTotal = c.priceCents * c.qty;
+    return `
+      <div class="cart-line">
+        <div>
+          <div class="cart-line-name">${escapeHtml(c.name)} <span style="color:var(--gold); font-size:0.7em; font-style:italic;">custom</span></div>
+          <div class="cart-line-controls">
+            <div class="cart-line-qty">
+              <button onclick="setCustomQty('${c.uid}', ${c.qty - 1})" aria-label="Decrease">−</button>
+              <span class="q">${c.qty}</span>
+              <button onclick="setCustomQty('${c.uid}', ${c.qty + 1})" aria-label="Increase">+</button>
+            </div>
+            <button class="cart-line-remove" onclick="removeCustomItem('${c.uid}')">remove</button>
+          </div>
+        </div>
+        <div class="cart-line-price">${fmtMoney(lineTotal)}</div>
+      </div>
+    `;
+  }).join('');
+
+  itemsEl.innerHTML = menuRows + customRows;
 
   const tipC = tipCents();
   const total = subtotal + tipC;
@@ -1216,8 +1417,11 @@ async function checkout() {
     return;
   }
 
-  // Build payload — IDs, quantities, and tip in cents (no prices, server validates everything)
+  // Build payload — IDs, quantities, custom items, and tip in cents (server validates everything)
   const items = Object.entries(cart).map(([id, qty]) => ({ id, qty }));
+  const customItemsPayload = customItems.map(c => ({
+    name: c.name, priceCents: c.priceCents, qty: c.qty
+  }));
   const tip = tipCents();
 
   btn.classList.add('loading');
@@ -1227,7 +1431,12 @@ async function checkout() {
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items, customer: { name, email, phone, notes }, tip })
+      body: JSON.stringify({
+        items,
+        customItems: customItemsPayload,
+        customer: { name, email, phone, notes },
+        tip
+      })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Checkout failed.');
@@ -1276,6 +1485,7 @@ document.getElementById('tipCustomInput').addEventListener('input', (e) => {
 // INIT
 // ─────────────────────────────────────────────
 loadCart();
+loadCustom();
 loadTip();
 // If saved tip is custom mode, show the input
 if (tipState.type === 'custom') {

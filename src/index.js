@@ -110,7 +110,7 @@ async function handleCreateCheckoutSession(request, env) {
   try { body = await request.json(); }
   catch (e) { return jsonResponse({ error: 'Invalid request format.' }, 400); }
 
-  const { items, customer, tip } = body || {};
+  const { items, customItems, customer, tip } = body || {};
 
   // Validate customer
   if (!customer || typeof customer !== 'object') {
@@ -127,19 +127,25 @@ async function handleCreateCheckoutSession(request, env) {
   }
   if (!phone) return jsonResponse({ error: 'Phone number is required.' }, 400);
 
-  // Validate items
-  if (!Array.isArray(items) || items.length === 0) {
+  // Normalize both item lists
+  const itemsList = Array.isArray(items) ? items : [];
+  const customList = Array.isArray(customItems) ? customItems : [];
+
+  if (itemsList.length === 0 && customList.length === 0) {
     return jsonResponse({ error: 'Your cart is empty.' }, 400);
   }
-  if (items.length > 50) {
+  if (itemsList.length > 50) {
     return jsonResponse({ error: 'Too many distinct items in cart.' }, 400);
+  }
+  if (customList.length > 20) {
+    return jsonResponse({ error: 'Too many custom items in cart.' }, 400);
   }
 
   // Build Stripe line items from server-side prices
   const lineItems = [];
   let subtotalCents = 0;
 
-  for (const raw of items) {
+  for (const raw of itemsList) {
     if (!raw || typeof raw !== 'object') return jsonResponse({ error: 'Invalid cart item.' }, 400);
     const id = String(raw.id || '');
     const qty = Number(raw.qty);
@@ -160,6 +166,41 @@ async function handleCreateCheckoutSession(request, env) {
         product_data: {
           name: item.name,
           metadata: { item_id: id },
+        },
+      },
+    });
+  }
+
+  // Custom items — Mercy uses these for special orders not on the standard menu.
+  // Name and price come from the client; we cap the per-item price to limit abuse.
+  // Custom items use the default tax code (i.e. they're taxable when Stripe Tax is enabled),
+  // which is the safe default for prepared food.
+  for (const raw of customList) {
+    if (!raw || typeof raw !== 'object') return jsonResponse({ error: 'Invalid custom item.' }, 400);
+    const ciName = String(raw.name || '').trim().slice(0, 100);
+    const ciPriceCents = Number(raw.priceCents);
+    const ciQty = Number(raw.qty);
+
+    if (!ciName) {
+      return jsonResponse({ error: 'Custom items require a name.' }, 400);
+    }
+    if (!Number.isInteger(ciPriceCents) || ciPriceCents < 50 || ciPriceCents > 50_000) {
+      return jsonResponse({ error: 'Custom item price must be between $0.50 and $500.' }, 400);
+    }
+    if (!Number.isInteger(ciQty) || ciQty < 1 || ciQty > MAX_QTY_PER_LINE) {
+      return jsonResponse({ error: 'Invalid quantity for custom item.' }, 400);
+    }
+
+    subtotalCents += ciPriceCents * ciQty;
+
+    lineItems.push({
+      quantity: ciQty,
+      price_data: {
+        currency: 'usd',
+        unit_amount: ciPriceCents,
+        product_data: {
+          name: ciName,
+          metadata: { item_id: 'custom' },
         },
       },
     });

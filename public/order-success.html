@@ -175,8 +175,10 @@ h1 .accent { color: var(--gold); }
 <div class="flag-stripe"></div>
 
 <script>
-  // Clear cart since checkout completed
+  // Clear cart, tip, and custom items since checkout completed
   try { localStorage.removeItem('fb_cart_v1'); } catch (e) {}
+  try { localStorage.removeItem('fb_tip_v1'); } catch (e) {}
+  try { localStorage.removeItem('fb_custom_v1'); } catch (e) {}
 
   // Show session reference (helps if customer needs to ask about their order)
   const sessionId = new URLSearchParams(location.search).get('session_id');
