@@ -612,6 +612,69 @@ nav {
   .order-header { padding: 2rem 1rem 1.5rem; }
 }
 
+/* ── TIP SELECTOR ── */
+.cart-tip {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-subtle);
+}
+.tip-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+.tip-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.35rem;
+}
+.tip-btn {
+  background: var(--dark-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-light);
+  padding: 0.55rem 0.3rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tip-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.tip-btn.active {
+  background: var(--gold);
+  color: var(--dark);
+  border-color: var(--gold);
+}
+.tip-custom-wrap {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  background: var(--dark-surface);
+  border: 1px solid var(--gold);
+  padding: 0 0.6rem;
+}
+.tip-custom-prefix {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+#tipCustomInput {
+  flex: 1;
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.55rem 0.4rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+#tipCustomInput:focus { outline: none; }
+
 /* ── LOADING ── */
 .checkout-btn.loading {
   position: relative;
@@ -685,7 +748,23 @@ nav {
     <div class="cart-items" id="cartItems" style="display:none;"></div>
 
     <div class="cart-totals" id="cartTotals" style="display:none;">
-      <div class="cart-row total"><span>Subtotal</span><span class="amt" id="cartTotal">$0.00</span></div>
+      <div class="cart-tip">
+        <div class="tip-label">Add a tip?</div>
+        <div class="tip-buttons">
+          <button type="button" class="tip-btn active" data-tip="0">None</button>
+          <button type="button" class="tip-btn" data-tip="10">10%</button>
+          <button type="button" class="tip-btn" data-tip="15">15%</button>
+          <button type="button" class="tip-btn" data-tip="20">20%</button>
+          <button type="button" class="tip-btn" data-tip="custom">$</button>
+        </div>
+        <div class="tip-custom-wrap" id="tipCustomWrap" style="display:none;">
+          <span class="tip-custom-prefix">$</span>
+          <input type="text" id="tipCustomInput" inputmode="decimal" placeholder="0.00" maxlength="6">
+        </div>
+      </div>
+      <div class="cart-row"><span>Subtotal</span><span class="amt" id="cartSubtotal">$0.00</span></div>
+      <div class="cart-row" id="cartTipRow" style="display:none;"><span>Tip</span><span class="amt" id="cartTipDisplay">$0.00</span></div>
+      <div class="cart-row total"><span>Total</span><span class="amt" id="cartTotal">$0.00</span></div>
       <div class="tax-note">Sales tax calculated at checkout if applicable.</div>
     </div>
 
@@ -831,7 +910,9 @@ CATERING_MENU.forEach(group => {
 // CART STATE
 // ─────────────────────────────────────────────
 const CART_KEY = 'fb_cart_v1';
+const TIP_KEY = 'fb_tip_v1';
 let cart = {}; // { itemId: quantity }
+let tipState = { type: 'none', percent: 0, customCents: 0 };
 
 function loadCart() {
   try {
@@ -839,9 +920,17 @@ function loadCart() {
     if (stored) cart = JSON.parse(stored) || {};
   } catch (e) { cart = {}; }
 }
-
 function saveCart() {
   try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {}
+}
+function loadTip() {
+  try {
+    const stored = localStorage.getItem(TIP_KEY);
+    if (stored) tipState = Object.assign(tipState, JSON.parse(stored) || {});
+  } catch (e) {}
+}
+function saveTip() {
+  try { localStorage.setItem(TIP_KEY, JSON.stringify(tipState)); } catch (e) {}
 }
 
 function addToCart(itemId) {
@@ -872,8 +961,40 @@ function cartSubtotal() {
   }
   return total;
 }
+function tipCents() {
+  if (tipState.type === 'percent') {
+    return Math.round(cartSubtotal() * tipState.percent / 100);
+  }
+  if (tipState.type === 'custom') {
+    return Math.max(0, Math.floor(tipState.customCents || 0));
+  }
+  return 0;
+}
+function cartTotal() {
+  return cartSubtotal() + tipCents();
+}
 function fmtMoney(cents) {
   return '$' + (cents / 100).toFixed(2);
+}
+
+function setTipPercent(p) {
+  tipState = { type: p === 0 ? 'none' : 'percent', percent: p, customCents: 0 };
+  saveTip();
+  const w = document.getElementById('tipCustomWrap');
+  if (w) w.style.display = 'none';
+  renderCart();
+}
+function setTipCustomMode() {
+  tipState = { type: 'custom', percent: 0, customCents: tipState.customCents || 0 };
+  saveTip();
+  const w = document.getElementById('tipCustomWrap');
+  const inp = document.getElementById('tipCustomInput');
+  if (w) w.style.display = 'flex';
+  if (inp) {
+    inp.value = tipState.customCents > 0 ? (tipState.customCents / 100).toFixed(2) : '';
+    inp.focus();
+  }
+  renderCart();
 }
 
 // ─────────────────────────────────────────────
@@ -1012,7 +1133,32 @@ function renderCart() {
     `;
   }).join('');
 
-  document.getElementById('cartTotal').textContent = fmtMoney(subtotal);
+  const tipC = tipCents();
+  const total = subtotal + tipC;
+
+  document.getElementById('cartSubtotal').textContent = fmtMoney(subtotal);
+  document.getElementById('cartTotal').textContent = fmtMoney(total);
+
+  const tipRow = document.getElementById('cartTipRow');
+  if (tipC > 0) {
+    tipRow.style.display = 'flex';
+    document.getElementById('cartTipDisplay').textContent = fmtMoney(tipC);
+  } else {
+    tipRow.style.display = 'none';
+  }
+
+  // Highlight active tip button
+  document.querySelectorAll('.tip-btn').forEach(btn => {
+    const val = btn.dataset.tip;
+    let active = false;
+    if (val === 'custom') active = tipState.type === 'custom';
+    else if (val === '0') active = tipState.type === 'none';
+    else active = tipState.type === 'percent' && tipState.percent === parseInt(val, 10);
+    btn.classList.toggle('active', active);
+  });
+
+  // Also update mobile cart total to reflect tip
+  document.getElementById('mobileCartTotal').textContent = fmtMoney(total);
 }
 
 function renderAll() {
@@ -1070,8 +1216,9 @@ async function checkout() {
     return;
   }
 
-  // Build payload — IDs and quantities only, no prices
+  // Build payload — IDs, quantities, and tip in cents (no prices, server validates everything)
   const items = Object.entries(cart).map(([id, qty]) => ({ id, qty }));
+  const tip = tipCents();
 
   btn.classList.add('loading');
   btn.disabled = true;
@@ -1080,7 +1227,7 @@ async function checkout() {
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items, customer: { name, email, phone, notes } })
+      body: JSON.stringify({ items, customer: { name, email, phone, notes }, tip })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Checkout failed.');
@@ -1105,9 +1252,38 @@ if (new URLSearchParams(location.search).get('test') === '1') {
 }
 
 // ─────────────────────────────────────────────
+// TIP BUTTONS WIRING
+// ─────────────────────────────────────────────
+document.querySelectorAll('.tip-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const val = btn.dataset.tip;
+    if (val === 'custom') setTipCustomMode();
+    else setTipPercent(parseInt(val, 10));
+  });
+});
+
+document.getElementById('tipCustomInput').addEventListener('input', (e) => {
+  // Allow only digits and one decimal point
+  const cleaned = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+  if (cleaned !== e.target.value) e.target.value = cleaned;
+  const dollars = parseFloat(cleaned);
+  tipState.customCents = (!isNaN(dollars) && dollars >= 0) ? Math.round(dollars * 100) : 0;
+  saveTip();
+  renderCart();
+});
+
+// ─────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────
 loadCart();
+loadTip();
+// If saved tip is custom mode, show the input
+if (tipState.type === 'custom') {
+  const w = document.getElementById('tipCustomWrap');
+  const inp = document.getElementById('tipCustomInput');
+  if (w) w.style.display = 'flex';
+  if (inp && tipState.customCents > 0) inp.value = (tipState.customCents / 100).toFixed(2);
+}
 renderAll();
 </script>
 
