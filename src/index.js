@@ -41,7 +41,8 @@ const MENU = {
   'chicken-adobo-party':   { name: 'Chicken Adobo — Party Tray (30 legs)',   price: 16000 },
   'chicken-adobo-full':    { name: 'Chicken Adobo — Full Tray (15 legs)',    price:  9000 },
   'fried-pork-belly-full': { name: 'Fried Pork Belly — Full Tray',           price: 19500 },
-  'fried-rice-full':       { name: 'Fried Rice — Full Tray',                 price:  8000 },
+  'fried-rice-party':      { name: 'Fried Rice — Party Tray',                price: 14000 },
+'fried-rice-full':       { name: 'Fried Rice — Full Tray',                 price:  8000 },
   'buttered-shrimp-full':  { name: 'Buttered Shrimp — Full Tray',            price: 17500 },
   'veggie-tray-full':      { name: 'Veggie — Full Tray',                     price:  7500 },
 };
